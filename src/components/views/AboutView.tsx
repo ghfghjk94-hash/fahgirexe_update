@@ -18,6 +18,10 @@ import {
   GitBranch,
   Terminal,
   Sparkles,
+  BookOpen,
+  MapPin,
+  Heart,
+  Quote,
 } from 'lucide-react';
 
 export const AboutView: React.FC = () => {
@@ -92,19 +96,69 @@ export const AboutView: React.FC = () => {
         </div>
       </div>
 
-      {/* Informasi Pengembang */}
-      <div className="clay-card rounded-3xl p-6 space-y-3">
-        <h2 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
-          <Sparkles className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
-          Tentang Pengembang & Hak Cipta
-        </h2>
-        <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
-          Aplikasi ini didesain dan dibangun secara khusus dengan standar perangkat lunak modern untuk memberikan pengalaman pengorganisasian file GitHub terbaik, simpel, dan ramah bagi pemula maupun pengembang berpengalaman.
-        </p>
-        <div className="pt-2 flex items-center gap-4 text-xs font-mono text-cyan-700 dark:text-cyan-300">
-          <span>Pengembang: Faiz_Fahmi_ID</span>
-          <span>·</span>
-          <span>Versi: 2.0.0 Claymorphic Pro</span>
+      {/* Profil Pengembang & Narasi Inspiratif */}
+      <div className="clay-card-glow rounded-3xl p-6 sm:p-8 space-y-6 relative overflow-hidden border border-cyan-500/20">
+        <div className="absolute -top-16 -right-16 w-64 h-64 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
+
+        {/* Header Profil */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200 dark:border-white/10">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-cyan-400 via-blue-500 to-indigo-600 flex items-center justify-center text-white shadow-lg shrink-0">
+              <BookOpen className="w-6 h-6" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2 flex-wrap">
+                <h2 className="text-lg font-black text-slate-900 dark:text-white font-mono tracking-tight">
+                  Faiz Fahmi
+                </h2>
+                <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-cyan-500/15 text-cyan-700 dark:text-cyan-300 border border-cyan-400/30 uppercase tracking-wider font-mono">
+                  Faiz_Fahmi_ID
+                </span>
+              </div>
+              <p className="text-xs text-slate-600 dark:text-slate-400 flex items-center gap-1.5 mt-0.5">
+                <MapPin className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400 shrink-0" />
+                <span>Pelosok Desa di Madiun, Jawa Timur · Santri & Otodidak Developer</span>
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 self-start sm:self-center">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-500/20 font-mono">
+              <Sparkles className="w-3 h-3 text-emerald-500" />
+              Creator & Architect
+            </span>
+          </div>
+        </div>
+
+        {/* Narasi Kisah yang Menyentuh & Memotivasi */}
+        <div className="space-y-3.5 text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
+          <div className="relative pl-4 border-l-2 border-cyan-500/40 italic font-serif text-slate-800 dark:text-slate-200 text-sm">
+            <Quote className="w-5 h-5 text-cyan-500/30 absolute -top-2 -left-2.5 -z-10" />
+            &ldquo;Keterbatasan geografis dan kesederhanaan hidup di desa bukanlah alasan untuk membatasi mimpi. Dari bilik santri yang tenang, baris demi baris kode dirajut untuk membuktikan bahwa ketulusan belajar mampu melahirkan karya berkelas dunia.&rdquo;
+          </div>
+
+          <p>
+            Lahir dan dibesarkan di sebuah pelosok desa di <strong>Madiun, Jawa Timur</strong>, keseharian saya berakar kuat pada nilai-nilai kesederhanaan seorang santri yang senantiasa mengaji kitab, melantunkan ayat suci, dan menjaga ketawadhu-an. Tanpa latar belakang pendidikan formal ilmu komputer di universitas ternama, dan jauh dari gemerlap fasilitas perkotaan, rasa cinta mendalam pada dunia rekayasa perangkat lunak tumbuh secara <strong>murni otodidak</strong>.
+          </p>
+
+          <p>
+            Di sela-sela waktu mengaji dan mengabdi, malam demi malam dilalui dalam kesunyian desa: menatap layar komputer tua, memecahkan kerumitan logika pemrograman, mempelajari arsitektur software modern, hingga merancang sistem desktop yang tangguh dan terotomatisasi secara permanen.
+          </p>
+
+          <p>
+            <strong>FAHGIT</strong> adalah buah dari perjalanan panjang itu. Sebuah persembahan tulus yang membuktikan bahwa siapa pun kamu, dari desa manapun kamu berasal, dan apa pun latar belakangmu—ketika niat baik dipadukan dengan ketekunan tanpa henti, doa yang tak pernah putus, dan rasa cinta pada ilmu pengetahuan, engkau mampu menciptakan teknologi yang presisi, mandiri, dan berdaya guna bagi banyak orang.
+          </p>
+        </div>
+
+        {/* Footer Card */}
+        <div className="pt-3 border-t border-slate-200 dark:border-white/10 flex flex-wrap items-center justify-between gap-3 text-[11px] font-mono text-slate-600 dark:text-slate-400">
+          <span className="flex items-center gap-1.5 text-cyan-700 dark:text-cyan-300 font-bold">
+            <Heart className="w-3.5 h-3.5 text-rose-500 fill-rose-500" />
+            Didedikasikan untuk Seluruh Pejuang Otodidak & Santri Indonesia
+          </span>
+          <span className="text-slate-500 dark:text-slate-400">
+            FAHGIT v2.0.0 Claymorphic Pro
+          </span>
         </div>
       </div>
     </div>

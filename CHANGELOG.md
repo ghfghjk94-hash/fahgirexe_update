@@ -5,30 +5,52 @@ Format ini mengacu pada [Keep a Changelog](https://keepachangelog.com/id/1.0.0/)
 
 ---
 
+## [1.1.0] - 2026-11-10
+
+### 🚀 EVOLUTION RELEASE (FAH INTELLIGENT APP UPDATE ENGINE)
+
+### ADDED
+- **Identitas Pengembang Santri Otodidak**: Menambahkan profil dan narasi inspiratif lengkap tentang **Faiz Fahmi (Faiz_Fahmi_ID)** dari pelosok desa di Madiun, Jawa Timur di halaman *Tentang FAHGIT*.
+- **Aset Ikon 3D Claymorphic Resmi**:
+  - `electron/icon.ico`: File ikon Microsoft Windows Icon (.ico) resmi dengan 6 layer resolusi lengkap (256x256 hingga 16x16 pixel).
+  - `electron/icon.png` & `public/icon.png`: Ikon biner PNG 512x512 ber-header IHDR chunk valid.
+  - Tampilan visual 3D logo pada pemicu Kapsul Navigasi dan kartu profil aplikasi.
+- **Pintasan Keyboard Desktop**: Menambahkan shortcut `F12` / `Ctrl+Shift+I` untuk Developer Tools dan `Ctrl+R` untuk Reload halaman aplikasi secara instan.
+
+### CHANGED
+- **Antarmuka Desktop Bersih (Borderless Menu)**: Menghilangkan baris menu standar Windows (*File, Edit, View, Window*) via `mainWindow.setMenu(null)` dan `Menu.setApplicationMenu(null)` untuk estetika modern yang lapang dan fokus.
+- **Resolusi Jalur Pemuatan Aplikasi**: Pemuatan berkas `dist/index.html` kini menggunakan resolusi dinamis `app.getAppPath()` untuk keandalan maksimal di seluruh jenis kemasan Windows.
+
+### FIXED
+- **Perbaikan Masalah Layar Hitam (Blank Screen)**: Menambahkan `base: './'` pada `vite.config.ts` sehingga seluruh aset JavaScript dan CSS dimuat dengan path relatif saat diakses melalui protokol desktop `file:///`.
+- **Perbaikan Validasi Ikon Windows**: Mengganti pemanggilan konversi gambar mentah dengan resource ikon `.ico` biner resmi sehingga proses kompilasi `electron-builder` (`icon-tool.js`) tidak mengalami kegagalan.
+- **Perbaikan Konflik TypeScript**: Menyesuaikan compiler TypeScript ke versi stabil (`^5.8.2` / `5.9.x` pure JS) untuk menghindari kebutuhan paket biner native `@typescript/typescript-win32-x64` pada Windows runner.
+- **Perbaikan Dependensi Electron**: Memindahkan `electron` dan `electron-builder` ke `devDependencies` sesuai aturan ketat arsitektur `electron-builder`.
+
+### IMPROVED
+- **Tiga Format Distribusi Windows Otomatis**:
+  1. `FAHGIT-Setup-1.1.0.exe` (Installer resmi NSIS dengan opsi direktori dan uninstaller).
+  2. `FAHGIT-Portable-1.1.0.exe` (Biner portabel single-file langsung pakai).
+  3. `FAHGIT-win-unpacked.zip` (Folder aplikasi siap pakai tanpa installer).
+- **Otomasi Checksum SHA-256**: Otomatis menghasilkan `checksums-sha256.txt` untuk verifikasi integritas seluruh artefak rilis.
+
+### OFFLINE
+- **Stabilitas Fitur Lokal**: Editor Monaco, preview markdown & HTML, ekstraksi ZIP, format JSON, dan logs lokal 100% independen tanpa memerlukan koneksi internet.
+
+### ONLINE
+- **Auto-Update Engine**: Mendukung deteksi pembaruan otomatis dua kanal (NSIS via `electron-updater` dan Portable via GitHub Releases REST API) dengan pop-up konfirmasi interaktif.
+- **Deteksi Jaringan Cerdas**: Heartbeat ping GitHub API (`/zen`) dengan algoritma *exponential backoff* dan notifikasi status banner adaptif.
+
+### SECURITY
+- **Zero Token Leakage**: Kredensial PAT terenkripsi AES-GCM 256-bit di IndexedDB lokal dengan PBKDF2 100.000 iterasi.
+- **Isolasi Konteks Desktop**: Mempertahankan `contextIsolation: true` dan membatasi IPC hanya untuk kanal whitelist.
+
+---
+
 ## [1.0.0] - 2026-11-10
 
 ### 🚀 Peluncuran Perdana (Initial Official Release)
-- **Transformasi Desktop Windows**:
-  - Ditenagai oleh runtime Electron dengan isolasi konteks (`contextIsolation = true`, `nodeIntegration = false`) dan IPC yang aman.
-  - Distribusi Windows Lengkap:
-    1. **Windows Installer (NSIS)**: `FAHGIT-Setup-1.0.0.exe` dengan dukungan pintasan Desktop, Start Menu, dan uninstaller resmi.
-    2. **Windows Portable**: `FAHGIT-Portable-1.0.0.exe` yang dapat langsung dijalankan tanpa proses instalasi.
-    3. **Unpacked Application**: `win-unpacked/` dan arsip distribusi `FAHGIT-win-unpacked.zip`.
-- **Mesin Auto-Update Permanen**:
-  - Terintegrasi dengan GitHub Releases API dan `electron-updater`.
-  - Pop-up pembaruan wajib interaktif dengan tombol:
-    1. **UPDATE SEKARANG** (Unduh langsung di dalam aplikasi atau melalui browser).
-    2. **LEWATI** (Mengabaikan versi untuk sesi yang sedang berjalan).
-    3. **SILANG (X)** (Menutup notifikasi tanpa mengganggu alur kerja).
-  - Indikator progres unduhan persentase, kecepatan, dan tombol restart/instalasi instan.
-- **Online + Offline Adaptive Engine**:
-  - Klasifikasi 5 tingkat fitur: Full Offline, Online Required, Offline with Local Fallback, Online Sync, dan Local Data.
-  - Deteksi koneksi ganda (status navigator peramban + heartbeat aktif ke GitHub API).
-  - Banner adaptif offline yang menjelaskan fitur mana yang tetap dapat digunakan secara lokal dan fitur mana yang membutuhkan koneksi internet.
-  - Antrean operasi offline dengan mekanisme sinkronisasi otomatis menggunakan *exponential backoff* saat koneksi pulih.
-- **Manajemen Repositori & Berkas Visual**:
-  - Penjelajah berkas grafis dan editor kode Monaco terpadu.
-  - Pusat unggah terpadu mendukung unggah berkas tunggal, folder bersarang, dan ekstraksi arsip ZIP langsung di browser.
-  - Keamanan token PAT lokal berbasis Web Crypto AES-GCM tanpa server backend perantara.
-- **Otomasi CI/CD GitHub Actions**:
-  - Pipeline `.github/workflows/build-release.yml` untuk membangun installer EXE, portable EXE, unpacked ZIP, checksum SHA-256, dan rilis GitHub otomatis saat push tag `v*`.
+- Transformasi Website ke Aplikasi Desktop Windows menggunakan Electron.
+- Integrasi Mesin Auto-Update Permanen dengan GitHub Releases.
+- Online + Offline Adaptive Engine 5-Tier.
+- Monaco Code Editor, ZIP Extractor, Batch Git Database API Commit.

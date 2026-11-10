@@ -5,7 +5,7 @@
  * Version: 1.0.0
  */
 
-const { app, BrowserWindow, ipcMain, shell, dialog } = require('electron');
+const { app, BrowserWindow, ipcMain, shell, dialog, Menu } = require('electron');
 const path = require('path');
 const fs = require('fs');
 const https = require('https');
@@ -57,6 +57,7 @@ function createWindow() {
     icon: appIcon,
     backgroundColor: '#0A0F1D',
     show: false,
+    autoHideMenuBar: true,
     webPreferences: {
       preload: path.join(__dirname, 'preload.cjs'),
       nodeIntegration: false,
@@ -66,6 +67,10 @@ function createWindow() {
       spellcheck: false,
     },
   });
+
+  // Hilangkan baris menu File, Edit, View, Window agar antarmuka desktop rapi dan bersih
+  mainWindow.setMenu(null);
+  Menu.setApplicationMenu(null);
 
   // Open external links in user's default browser (security rule)
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
