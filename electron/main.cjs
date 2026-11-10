@@ -44,7 +44,9 @@ let networkStatus = {
 };
 
 function createWindow() {
-  const iconPath = path.join(__dirname, 'icon.png');
+  const icoPath = path.join(__dirname, 'icon.ico');
+  const pngPath = path.join(__dirname, 'icon.png');
+  const appIcon = fs.existsSync(icoPath) ? icoPath : (fs.existsSync(pngPath) ? pngPath : undefined);
 
   mainWindow = new BrowserWindow({
     width: 1280,
@@ -52,7 +54,7 @@ function createWindow() {
     minWidth: 1024,
     minHeight: 680,
     title: 'FAHGIT by: Faiz_Fahmi_ID',
-    icon: fs.existsSync(iconPath) ? iconPath : undefined,
+    icon: appIcon,
     backgroundColor: '#0A0F1D',
     show: false,
     webPreferences: {

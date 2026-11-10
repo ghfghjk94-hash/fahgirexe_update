@@ -44,6 +44,7 @@ jobs:
         run: npm run build
 
       - name: 6. Build Windows Distributions (NSIS, Portable, Unpacked)
+        shell: pwsh
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
