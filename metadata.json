@@ -1,0 +1,6 @@
+{
+  "name": "FAHGIT - GitHub Repository & File Manager",
+  "description": "Professional GitHub Repository and File Management Platform by Faiz_Fahmi_ID. Manage files, repositories, code editor, nested uploads, and ZIP extraction with local AES-GCM encrypted PAT storage.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
