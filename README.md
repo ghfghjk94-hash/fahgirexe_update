@@ -1,121 +1,122 @@
 # FAHGIT by: Faiz_Fahmi_ID
-> **Your GitHub. Your Files. Your Control.**
-> Professional GitHub Repository & File Manager Platform
+> **FAH UNIVERSAL WEBSITE TO WINDOWS APPLICATION ENGINE WITH PERMANENT AUTO UPDATE SYSTEM**  
+> *Your GitHub. Your Files. Your Control.*  
+> **Versi:** 1.0.0 | **Author:** Faiz_Fahmi_ID
 
 ---
 
-## 1. Deskripsi FAHGIT
-**FAHGIT** adalah platform website manajemen repository dan file GitHub modern dan profesional yang memungkinkan pengguna mengelola seluruh file, folder, dan repository GitHub tanpa harus membuka terminal atau mengetik command Git secara manual.
+## 1. Arsitektur & Gambaran Umum FAHGIT Desktop
+**FAHGIT** adalah aplikasi desktop Windows dan platform web manajemen repository GitHub modern yang dibangun dengan arsitektur **Offline-First**, runtime **Electron**, dan sistem **Permanent Auto Update** terintegrasi langsung dengan GitHub Releases.
 
-Aplikasi ini menggabungkan kekuatan:
-- **GitHub Desktop**: Manajemen branch, commit history, diff viewer, multi-repo workspace.
-- **Visual Studio Code / Monaco Editor**: Code editor lengkap dengan syntax highlighting, multiple tabs, word wrap, dan live preview.
-- **Windows File Explorer**: Navigasi hierarki folder, multi-select, breadcrumbs, context action, create file/folder dengan `.gitkeep`.
-- **ZIP Extractor & Nested Upload Engine**: Ekstraksi arsip ZIP client-side dengan JSZip, proteksi path traversal, dan batch Git commit atomik.
-- **Security Vault**: Penyimpanan GitHub Personal Access Token (PAT) terenkripsi AES-GCM 256-bit di IndexedDB via Web Crypto API.
+Aplikasi ini mendistribusikan tiga output Windows siap pakai:
+1. **Windows EXE Installer (`FAHGIT-Setup-1.0.0.exe`)**: NSIS installer resmi dengan custom install directory, uninstaller bersih, desktop & start menu shortcut, serta registry hygiene.
+2. **Windows EXE Portable (`FAHGIT-Portable-1.0.0.exe`)**: Standalone binary tanpa instalasi, menyimpan state dan cache di direktori user lokal tanpa mengotori registry.
+3. **Windows Unpacked Application (`release/win-unpacked/` & `FAHGIT-win-unpacked.zip`)**: Binary terekstrak siap dijalankan atau di-debug langsung.
 
 ---
 
-## 2. Fitur Utama
-1. **GitHub Connection & Security Vault**:
-   - Autentikasi langsung HTTPS ke `api.github.com`.
-   - Tidak ada backend perantara yang menyimpan PAT.
-   - Enkripsi Web Crypto API (PBKDF2 100,000 iterasi + AES-GCM 256-bit).
-   - Fitur Lock Application, Master Passphrase, dan Purge Local Credentials.
-   - Inspeksi OAuth Scopes dan Rate Limit quota.
-2. **Repository Manager**:
-   - List dan Grid layout dengan pencarian cepat.
-   - Filter Public, Private, dan Archived.
-   - Create Repository (dengan opsi README, .gitignore template).
-   - Safe Two-Step Delete Repository dengan konfirmasi ketik nama repository.
-3. **Repository File Explorer**:
-   - Navigasi subfolder interaktif dan breadcrumbs.
-   - Preview visual untuk berbagai tipe file (PNG, JPG, SVG, WEBP, GIF, PDF, Binary).
-   - Pembuatan file baru dengan isi awal.
-   - Pembuatan folder baru otomatis menggunakan `.gitkeep`.
-   - Rename file/folder dan Move file/folder.
-   - Penghapusan file dan folder dengan konfirmasi jumlah file.
-   - Download file satuan atau download folder langsung sebagai ZIP.
-4. **Monaco Code Editor**:
-   - Integrasi resmi Monaco Editor.
-   - Multiple tabs dengan dirty indicator (`*`).
-   - Conflict detection: verifikasi SHA sebelum commit untuk mencegah tabrakan data.
-   - Live Markdown preview dan Live sandboxed HTML preview.
-   - JSON Formatter bawaan.
-5. **Upload Center & Batch Git Engine**:
-   - Mendukung single file, multi-file, dan nested folders tanpa meratakan direktori (`webkitdirectory`).
-   - Drag and drop file upload.
-   - Single atomic commit via Git Database API (Blobs, Trees, Commits, Refs).
-6. **ZIP Extractor & Deployer**:
-   - Ekstraksi arsip ZIP client-side menggunakan JSZip.
-   - Deteksi integritas arsip, proteksi ZIP bomb (safety size cap), dan proteksi path traversal (`../`).
-   - Preview seluruh file hasil ekstrak sebelum upload.
-   - Deploy langsung ke branch repository pilihan.
-7. **Branch Manager & Commit History**:
-   - Buat branch baru dari commit SHA.
-   - Switch active branch secara instan.
-   - Hapus branch (dengan proteksi branch default).
-   - Riwayat commit lengkap dengan author, timestamp, dan diff patch visual.
-8. **Audit Logs & Backup**:
-   - Catatan riwayat aksi (tanpa mengekspos token atau rahasia).
-   - Ekspor/impor backup terenkripsi (JSON).
-   - Download seluruh repository sebagai ZIP.
+## 2. Klasifikasi Sistem Online & Offline Adaptif (5-Tier)
+
+FAHGIT menerapkan engine adaptif 5-tier untuk menangani kondisi jaringan secara tangguh tanpa pernah membuat aplikasi crash atau menampilkan layar kosong:
+
+| Tier | Klasifikasi | Cakupan Fitur | Perilaku Saat Offline |
+| :--- | :--- | :--- | :--- |
+| **1** | **FULL OFFLINE** | Local Code Editor (Monaco), JSON Formatter, Local Markdown & HTML sandbox preview, ZIP archive inspection & extraction, Pengaturan tema, audit logs lokal. | Berjalan 100% normal tanpa membutuhkan jaringan internet. |
+| **2** | **ONLINE REQUIRED** | Cloning/Fetching remote repository, listing remote branches, creating remote repository, remote atomic Git commits. | Dijeda dengan indikator visual ramah pemula; pengguna diberitahu fitur memerlukan koneksi GitHub. |
+| **3** | **OFFLINE WITH LOCAL FALLBACK** | Pengecekan status repository & file browsing. | Membaca struktur file dan konten dari snapshot cache lokal (`IndexedDB` / `localStorage`). |
+| **4** | **ONLINE SYNC** | Antrean perubahan file lokal & upload batch. | Disimpan ke **Offline Action Queue** lokal. Ketika koneksi pulih, aplikasi mengecek kesehatan API GitHub dan mensinkronkan antrean secara aman tanpa duplikasi aksi. |
+| **5** | **LOCAL DATA** | Kredensial PAT terenkripsi (AES-GCM 256-bit), preferensi tema, file draf editor, riwayat cache. | Tersimpan aman di IndexedDB `fahgit_local_db` di sandbox lokal browser/Electron. |
+
+### Deteksi Koneksi & Reconnection Engine
+- **Dual Verification**: Deteksi event `navigator.onLine` dikombinasikan dengan active heartbeat ping ke endpoint ringan GitHub API (`https://api.github.com/zen`).
+- **Exponential Backoff**: Reconnection polling dimulai dari interval 2 detik hingga maksimum 30 detik dengan jitter untuk menghindari request storming.
+- **Offline Banner**: Notifikasi non-intrusif di bagian atas antarmuka menjelaskan status koneksi, fitur lokal yang tetap aktif, dan antrean sinkronisasi.
 
 ---
 
-## 3. Teknologi yang Digunakan
-- **Frontend Framework**: React 19 + TypeScript
-- **Build Tool**: Vite
-- **Styling**: Tailwind CSS v4 (dengan custom dark variant)
-- **Icons**: Lucide React
-- **Code Editor**: `@monaco-editor/react`
-- **Arsip & Kompresi**: `jszip`
-- **Enkripsi Lokal**: Web Crypto API (`window.crypto.subtle`)
-- **Penyimpanan Lokal**: IndexedDB (`fahgit_local_db`)
-- **Git Engine**: GitHub REST API v2022-11-28 & Git Database API
+## 3. Sistem Permanent Auto-Update Terintegrasi
+
+Aplikasi desktop dilengkapi dengan auto-update permanen dari GitHub Releases:
+- **Penyedia**: GitHub Releases (`FaizFahmiID/fahgit`).
+- **Pengecekan Otomatis**: Dilakukan saat aplikasi pertama kali dibuka dan dapat dipicu manual melalui tombol *Periksa Pembaruan* di pengaturan.
+- **Modal Interaktif Wajib**:
+  - Menampilkan nama aplikasi: `FAHGIT by: Faiz_Fahmi_ID`.
+  - Versi saat ini vs Versi terbaru yang tersedia.
+  - Tanggal rilis dan ukuran unduhan (MB).
+  - Catatan rilis lengkap (Changelog).
+  - Tiga tombol aksi wajib:
+    - **`UPDATE SEKARANG`**: Mengunduh pembaruan di latar belakang dengan progress bar real-time.
+    - **`LEWATI`**: Mengabaikan versi ini hingga versi berikutnya dirilis.
+    - **`SILANG (X)`**: Menutup modal sementara dan mengingatkan kembali nanti.
+  - Setelah unduhan selesai, tombol berganti menjadi **`RESTART & PASANG SEKARANG`**.
 
 ---
 
-## 4. Panduan Membuat GitHub Personal Access Token (PAT)
-Untuk menghubungkan akun GitHub Anda ke FAHGIT:
-1. Buka [GitHub Personal Access Tokens Settings](https://github.com/settings/tokens).
-2. Pilih **Generate new token (classic)**.
-3. Berikan deskripsi token, misalnya: `FAHGIT Platform`.
-4. Pilih masa berlaku token (misalnya 30 days, 90 days, atau No expiration).
-5. Pilih izin/scopes yang dibutuhkan:
-   - `repo` *(Wajib)*: Memberikan akses penuh untuk membaca repository, membuat file, mengedit kode, dan membuat commit.
-   - `delete_repo` *(Opsional)*: Hanya centang jika Anda ingin dapat menghapus repository melalui FAHGIT.
-6. Klik **Generate token** di bagian bawah halaman.
-7. Salin string token (format: `ghp_...`) dan tempelkan ke form koneksi FAHGIT.
+## 4. Keamanan Desktop (Security Hardening)
+- `contextIsolation = true`: Mengisolasi renderer process dari konteks internal Node.js.
+- `nodeIntegration = false`: Mencegah eksekusi script arbitrary mengakses file system Node.js secara langsung.
+- `sandbox = true`: Menjalankan renderer dalam sandbox browser Chromium.
+- **Preload API Terbatas (`contextBridge`)**: Hanya mengekspos kanal IPC whitelist (`desktop:check-updates`, `desktop:start-download`, `desktop:install-update`, `desktop:open-external`).
+- **External URL Safety**: Semua tautan eksternal (dokumentasi, GitHub profile, settings) dibuka menggunakan default web browser Windows bawaan pengguna (`shell.openExternal`).
+- **Zero Token Leakage**: GitHub Personal Access Token tidak pernah diekspos melalui IPC atau telemetry.
 
 ---
 
-## 5. Keamanan & Penanganan Kredensial
-- **Zero Server Storage**: FAHGIT tidak memiliki database backend atau server relay yang menampung PAT Anda.
-- **Enkripsi AES-GCM**: Ketika Anda memilih opsi "Remember token", token dienkripsi secara lokal di browser menggunakan AES-GCM 256-bit dengan initialization vector (IV) acak 12-byte dan salt 16-byte yang diderivasi dari Master Passphrase Anda menggunakan PBKDF2 (100.000 iterasi).
-- **Auto-Lock & Purge**: Anda dapat mengunci aplikasi kapan saja dengan tombol Lock Vault, atau menghapus seluruh kredensial lokal dengan tombol Purge Data.
+## 5. Perintah Menjalankan & Membangun Distribusi Windows
 
----
-
-## 6. Cara Menjalankan & Membangun Proyek
-
-### Mode Development:
+### Development (Web + Electron)
 ```bash
-npm install
+# Menjalankan Vite Web Dev Server (Port 3000)
 npm run dev
+
+# Menjalankan Electron Desktop App dalam mode Development
+npm run electron:dev
 ```
 
-### Production Build:
+### Build Web Renderer
 ```bash
 npm run build
 ```
 
+### Build Distribusi Windows Lengkap
+```bash
+# Membangun Installer (NSIS), Portable EXE, dan Unpacked Directory sekaligus:
+npm run dist:win
+
+# Hanya membangun Windows NSIS Installer (FAHGIT-Setup-1.0.0.exe):
+npm run dist:nsis
+
+# Hanya membangun Windows Portable EXE (FAHGIT-Portable-1.0.0.exe):
+npm run dist:portable
+
+# Hanya menghasilkan Unpacked Directory (release/win-unpacked/):
+npm run dist:unpacked
+```
+
+Semua output instalasi dan biner Windows akan tersimpan rapi di direktori `/release`.
+
 ---
 
-## 7. Batasan Teknis & Rekomendasi
-- **Batas Ukuran File Browser**: GitHub Contents API memiliki batas upload file maksimal 100MB per file. Untuk file biner yang sangat besar (>100MB), disarankan menggunakan Git LFS melalui Git CLI lokal.
-- **Rate Limit GitHub API**: Akun terautentikasi PAT memiliki kuota 5.000 request per jam. FAHGIT menyediakan indikator kuota real-time di header atas.
-- **Single Commit Batch Size**: Engine batch FAHGIT memproses blob dalam batch terkontrol untuk memastikan browser tidak kehabisan memori pada folder berukuran besar.
+## 6. GitHub Actions CI/CD Release Automation
+Workflow CI/CD tersedia di `.github/workflows/build-release.yml`:
+1. Memicu build otomatis saat tag git dibuat (contoh: `git tag v1.0.0 && git push origin v1.0.0`) atau via tombol *Run workflow* di GitHub Actions tab.
+2. Melakukan checkout, setup Node.js 20, dan instalasi dependensi.
+3. Menjalankan linter dan build Vite renderer.
+4. Menjalankan `electron-builder` pada runner `windows-latest`.
+5. Mengompresi unpacked folder menjadi `FAHGIT-win-unpacked.zip`.
+6. Menghasilkan checksum SHA-256 untuk seluruh artefak release (`checksums.sha256`).
+7. Mempublikasikan GitHub Release baru secara otomatis berisi:
+   - `FAHGIT-Setup-1.0.0.exe`
+   - `FAHGIT-Portable-1.0.0.exe`
+   - `FAHGIT-win-unpacked.zip`
+   - `checksums.sha256`
+   - Catatan rilis dari `CHANGELOG.md`.
+
+---
+
+## 7. Versioning & Changelog
+Proyek ini mengikuti standar **Semantic Versioning (SemVer)**: `MAJOR.MINOR.PATCH`.
+Setiap rilis didokumentasikan secara rinci di file `CHANGELOG.md`.
 
 ---
 **FAHGIT by: Faiz_Fahmi_ID**  

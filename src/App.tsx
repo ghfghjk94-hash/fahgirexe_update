@@ -13,6 +13,8 @@ import { CapsuleNav } from './components/layout/CapsuleNav';
 import { TopHeader } from './components/layout/TopHeader';
 import { Footer } from './components/layout/Footer';
 import { ToastContainer } from './components/common/ToastContainer';
+import { OfflineBanner } from './components/common/OfflineBanner';
+import { UpdateModal } from './components/common/UpdateModal';
 
 // Views
 import { ConnectionView } from './components/views/ConnectionView';
@@ -78,6 +80,12 @@ const MainLayout: React.FC = () => {
 
       {/* Toast Notification Container */}
       <ToastContainer />
+
+      {/* Pop-up Update Permanen (Wajib Bagian F) */}
+      <UpdateModal />
+
+      {/* Banner Adaptif Offline/Online (Wajib Bagian B) */}
+      <OfflineBanner />
 
       {/* Floating Clay Capsule Navigation (Left on PC/Tablet landscape, Bottom on Android/Mobile) */}
       <CapsuleNav />
