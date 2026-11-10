@@ -188,12 +188,19 @@ async function checkForUpdatesSilent() {
   checkGitHubReleasesDirect();
 }
 
-function checkGitHubReleasesDirect() {
+function checkGitHubReleasesDirect(token) {
   const currentVersion = app.getVersion();
   const url = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/releases/latest`;
+  const headers = {
+    'User-Agent': 'FAHGIT-Desktop-App',
+    Accept: 'application/vnd.github.v3+json',
+  };
+  if (token) {
+    headers['Authorization'] = `token ${token}`;
+  }
 
   https
-    .get(url, { headers: { 'User-Agent': 'FAHGIT-Desktop-App' } }, (res) => {
+    .get(url, { headers }, (res) => {
       let data = '';
       res.on('data', (chunk) => (data += chunk));
       res.on('end', () => {
@@ -305,17 +312,20 @@ ipcMain.handle('desktop:get-app-info', () => {
   };
 });
 
-ipcMain.handle('desktop:check-updates', async () => {
+ipcMain.handle('desktop:check-updates', async (event, token) => {
   if (autoUpdater && app.isPackaged && !process.env.PORTABLE_EXECUTABLE_DIR) {
     try {
+      if (token) {
+        autoUpdater.requestHeaders = { Authorization: `token ${token}` };
+      }
       await autoUpdater.checkForUpdates();
       return { status: 'checking' };
     } catch (err) {
-      checkGitHubReleasesDirect();
+      checkGitHubReleasesDirect(token);
       return { status: 'fallback', message: err.message };
     }
   } else {
-    checkGitHubReleasesDirect();
+    checkGitHubReleasesDirect(token);
     return { status: 'checking-direct' };
   }
 });

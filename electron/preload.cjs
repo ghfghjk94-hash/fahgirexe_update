@@ -13,7 +13,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
   getAppInfo: () => ipcRenderer.invoke('desktop:get-app-info'),
 
   // Permanent Auto-Update Engine API
-  checkForUpdates: () => ipcRenderer.invoke('desktop:check-updates'),
+  checkForUpdates: (token) => ipcRenderer.invoke('desktop:check-updates', token),
   startUpdateDownload: () => ipcRenderer.invoke('desktop:start-download'),
   installUpdate: () => ipcRenderer.invoke('desktop:install-update'),
 

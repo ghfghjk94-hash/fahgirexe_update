@@ -12,6 +12,7 @@
  */
 
 import React, { useState, useEffect } from 'react';
+import { useApp } from '../../context/AppContext';
 import { UpdateInfoPayload, DownloadProgressPayload } from '../../types/electron';
 import {
   Sparkles,
@@ -27,12 +28,23 @@ import {
 } from 'lucide-react';
 
 export const UpdateModal: React.FC = () => {
+  const { token } = useApp();
   const [updateInfo, setUpdateInfo] = useState<UpdateInfoPayload | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
   const [downloadProgress, setDownloadProgress] = useState<DownloadProgressPayload | null>(null);
   const [isReadyToInstall, setIsReadyToInstall] = useState(false);
   const [updateError, setUpdateError] = useState<string | null>(null);
+
+  // Trigger auto check with token for private or public repos
+  useEffect(() => {
+    if (window.electronAPI) {
+      const timer = setTimeout(() => {
+        window.electronAPI?.checkForUpdates(token || undefined);
+      }, 2500);
+      return () => clearTimeout(timer);
+    }
+  }, [token]);
 
   useEffect(() => {
     // Check if dismissed in this session

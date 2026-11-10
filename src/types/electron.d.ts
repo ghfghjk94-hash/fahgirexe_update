@@ -35,7 +35,7 @@ export interface ConnectionStatusPayload {
 export interface ElectronAPI {
   isDesktop: boolean;
   getAppInfo: () => Promise<DesktopAppInfo>;
-  checkForUpdates: () => Promise<{ status: string; message?: string }>;
+  checkForUpdates: (token?: string) => Promise<{ status: string; message?: string }>;
   startUpdateDownload: () => Promise<{ status: string; message?: string }>;
   installUpdate: () => Promise<void>;
   onUpdateAvailable: (callback: (info: UpdateInfoPayload) => void) => () => void;
