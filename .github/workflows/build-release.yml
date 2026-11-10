@@ -7,9 +7,9 @@ on:
   workflow_dispatch:
     inputs:
       release_tag:
-        description: 'Release Tag (e.g. v1.0.0)'
+        description: 'Release Tag (misal: v1.2.0)'
         required: false
-        default: 'v1.0.0'
+        default: 'v1.2.0'
 
 permissions:
   contents: write
@@ -79,7 +79,8 @@ jobs:
             $tag = $env:GITHUB_REF.Substring(10)
           }
           if (-not $tag) {
-            $tag = "v1.0.0"
+            $pkg = Get-Content "package.json" | ConvertFrom-Json
+            $tag = "v$($pkg.version)"
           }
           Write-Host "Using Release Tag: $tag"
           "RELEASE_TAG=$tag" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8

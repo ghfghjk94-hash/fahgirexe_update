@@ -19,6 +19,7 @@ import {
   Menu,
   X,
   Sparkles,
+  GitFork,
 } from 'lucide-react';
 
 interface CapsuleItem {
@@ -56,6 +57,12 @@ export const CapsuleNav: React.FC = () => {
       label: 'Repositori',
       icon: FolderGit2,
       gradient: 'from-indigo-500 via-purple-500 to-pink-500',
+    },
+    {
+      id: 'repo-cloner',
+      label: 'Klon Repo',
+      icon: GitFork,
+      gradient: 'from-violet-500 via-purple-500 to-indigo-600',
     },
     {
       id: 'file-manager',

@@ -9,6 +9,7 @@ export type AppView =
   | 'code-editor'
   | 'upload-center'
   | 'zip-manager'
+  | 'repo-cloner'
   | 'branches'
   | 'commits'
   | 'favorites'

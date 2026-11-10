@@ -34,7 +34,7 @@ export const Footer: React.FC = () => {
           </div>
         )}
         <span className="text-slate-700">|</span>
-        <span className="text-slate-400">v1.1.0 Capsule</span>
+        <span className="text-slate-400">v1.2.0 Capsule</span>
       </div>
     </footer>
   );

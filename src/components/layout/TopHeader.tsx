@@ -20,6 +20,7 @@ import {
   ChevronDown,
   X,
   Sparkles,
+  GitFork,
 } from 'lucide-react';
 
 export const TopHeader: React.FC = () => {
@@ -52,6 +53,7 @@ export const TopHeader: React.FC = () => {
   const menuItems: Array<{ id: AppView; label: string; icon: React.ElementType; color: string }> = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, color: 'text-cyan-500 dark:text-cyan-400' },
     { id: 'repositories', label: 'Repositori', icon: FolderGit2, color: 'text-indigo-500 dark:text-indigo-400' },
+    { id: 'repo-cloner', label: 'Klon Repositori', icon: GitFork, color: 'text-violet-500 dark:text-violet-400' },
     { id: 'file-manager', label: 'Penjelajah & Editor', icon: Files, color: 'text-amber-500 dark:text-amber-400' },
     { id: 'upload-center', label: 'Pusat Unggah & ZIP', icon: UploadCloud, color: 'text-emerald-500 dark:text-emerald-400' },
     { id: 'settings', label: 'Pengaturan & Cabang', icon: Settings, color: 'text-sky-500 dark:text-sky-400' },

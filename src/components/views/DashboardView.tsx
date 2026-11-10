@@ -21,6 +21,7 @@ import {
   ChevronRight,
   Sparkles,
   ShieldCheck,
+  GitFork,
 } from 'lucide-react';
 
 export const DashboardView: React.FC = () => {
@@ -263,12 +264,26 @@ export const DashboardView: React.FC = () => {
       {/* ============================================================== */}
       {/* 3. UBIN CLAY RGB UNTUK NAVIGASI CEPAT                         */}
       {/* ============================================================== */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5">
+        <button
+          onClick={() => setView('repo-cloner')}
+          className="p-4 rounded-3xl clay-card hover:border-violet-500/50 text-left transition-all group relative overflow-hidden"
+        >
+          <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-violet-500 via-purple-500 to-indigo-600 text-white flex items-center justify-center mb-2.5 group-hover:scale-110 transition-transform clay-button-rgb shadow-sm">
+            <GitFork className="w-5 h-5" />
+          </div>
+          <strong className="block text-slate-900 dark:text-white text-xs font-bold flex items-center gap-1.5">
+            <span>Klon Repo</span>
+            <span className="text-[9px] font-mono px-1.5 py-0.2 rounded-full bg-violet-500/20 text-violet-600 dark:text-violet-300 font-bold">BARU</span>
+          </strong>
+          <span className="text-[11px] text-slate-600 dark:text-slate-400">Salin repo GitHub orang lain</span>
+        </button>
+
         <button
           onClick={() => setView('file-manager')}
-          className="p-5 rounded-3xl clay-card hover:border-amber-400/40 text-left transition-all group"
+          className="p-4 rounded-3xl clay-card hover:border-amber-400/40 text-left transition-all group"
         >
-          <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-amber-400 to-orange-500 text-slate-950 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform clay-button-rgb shadow-sm">
+          <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-amber-400 to-orange-500 text-slate-950 flex items-center justify-center mb-2.5 group-hover:scale-110 transition-transform clay-button-rgb shadow-sm">
             <Files className="w-5 h-5" />
           </div>
           <strong className="block text-slate-900 dark:text-white text-xs font-bold">Penjelajah & Editor</strong>
@@ -277,9 +292,9 @@ export const DashboardView: React.FC = () => {
 
         <button
           onClick={() => setView('repositories')}
-          className="p-5 rounded-3xl clay-card hover:border-indigo-400/40 text-left transition-all group"
+          className="p-4 rounded-3xl clay-card hover:border-indigo-400/40 text-left transition-all group"
         >
-          <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-indigo-500 to-purple-600 text-white flex items-center justify-center mb-3 group-hover:scale-110 transition-transform clay-button-rgb shadow-sm">
+          <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-indigo-500 to-purple-600 text-white flex items-center justify-center mb-2.5 group-hover:scale-110 transition-transform clay-button-rgb shadow-sm">
             <FolderGit2 className="w-5 h-5" />
           </div>
           <strong className="block text-slate-900 dark:text-white text-xs font-bold">Repositori</strong>
@@ -288,9 +303,9 @@ export const DashboardView: React.FC = () => {
 
         <button
           onClick={() => setView('upload-center')}
-          className="p-5 rounded-3xl clay-card hover:border-emerald-400/40 text-left transition-all group"
+          className="p-4 rounded-3xl clay-card hover:border-emerald-400/40 text-left transition-all group"
         >
-          <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-emerald-400 to-teal-500 text-slate-950 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform clay-button-rgb shadow-sm">
+          <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-emerald-400 to-teal-500 text-slate-950 flex items-center justify-center mb-2.5 group-hover:scale-110 transition-transform clay-button-rgb shadow-sm">
             <UploadCloud className="w-5 h-5" />
           </div>
           <strong className="block text-slate-900 dark:text-white text-xs font-bold">Unggah & ZIP</strong>
@@ -299,12 +314,12 @@ export const DashboardView: React.FC = () => {
 
         <button
           onClick={() => setView('settings')}
-          className="p-5 rounded-3xl clay-card hover:border-cyan-400/40 text-left transition-all group"
+          className="p-4 rounded-3xl clay-card hover:border-cyan-400/40 text-left transition-all group col-span-2 sm:col-span-1"
         >
-          <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-cyan-400 to-blue-500 text-slate-950 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform clay-button-rgb shadow-sm">
+          <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-cyan-400 to-blue-500 text-slate-950 flex items-center justify-center mb-2.5 group-hover:scale-110 transition-transform clay-button-rgb shadow-sm">
             <Sparkles className="w-5 h-5" />
           </div>
-          <strong className="block text-slate-900 dark:text-white text-xs font-bold">Pengaturan & Cabang</strong>
+          <strong className="block text-slate-900 dark:text-white text-xs font-bold">Pengaturan</strong>
           <span className="text-[11px] text-slate-600 dark:text-slate-400">Tema, token & cabang</span>
         </button>
       </div>

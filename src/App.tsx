@@ -20,6 +20,7 @@ import { UpdateModal } from './components/common/UpdateModal';
 import { ConnectionView } from './components/views/ConnectionView';
 import { DashboardView } from './components/views/DashboardView';
 import { RepositoriesView } from './components/views/RepositoriesView';
+import { RepoClonerView } from './components/views/RepoClonerView';
 import { FileManagerView } from './components/views/FileManagerView';
 import { CodeEditorView } from './components/views/CodeEditorView';
 import { UploadCenterView } from './components/views/UploadCenterView';
@@ -42,6 +43,8 @@ const MainLayout: React.FC = () => {
         return <DashboardView />;
       case 'repositories':
         return <RepositoriesView />;
+      case 'repo-cloner':
+        return <RepoClonerView />;
       case 'file-manager':
       case 'code-editor':
         return <FileManagerView />;
