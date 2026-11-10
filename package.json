@@ -4,6 +4,10 @@
   "version": "1.0.0",
   "description": "FAHGIT by: Faiz_Fahmi_ID - Professional GitHub Repository & File Manager Platform",
   "author": "Faiz_Fahmi_ID",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ghfghjk94-hash/fahgirexe_update.git"
+  },
   "main": "electron/main.cjs",
   "scripts": {
     "dev": "vite --port=3000 --host=0.0.0.0",
@@ -34,8 +38,8 @@
     "publish": [
       {
         "provider": "github",
-        "owner": "FaizFahmiID",
-        "repo": "fahgit"
+        "owner": "ghfghjk94-hash",
+        "repo": "fahgirexe_update"
       }
     ],
     "win": {

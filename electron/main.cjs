@@ -23,8 +23,18 @@ try {
 }
 
 const isDev = process.env.NODE_ENV === 'development' || !app.isPackaged;
-const GITHUB_OWNER = 'FaizFahmiID';
-const GITHUB_REPO = 'fahgit';
+let GITHUB_OWNER = process.env.GITHUB_OWNER || 'ghfghjk94-hash';
+let GITHUB_REPO = process.env.GITHUB_REPO || 'fahgirexe_update';
+
+try {
+  const pkg = require('../package.json');
+  if (pkg.build && pkg.build.publish && pkg.build.publish[0]) {
+    if (pkg.build.publish[0].owner) GITHUB_OWNER = pkg.build.publish[0].owner;
+    if (pkg.build.publish[0].repo) GITHUB_REPO = pkg.build.publish[0].repo;
+  }
+} catch {
+  // use defaults
+}
 
 let mainWindow = null;
 let networkStatus = {

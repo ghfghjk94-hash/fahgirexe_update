@@ -29,10 +29,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'npm'
 
       - name: 3. Install Dependencies
-        run: npm ci || npm install
+        run: npm install --legacy-peer-deps
 
       - name: 4. Validate & Typecheck
         run: npm run lint
@@ -44,7 +43,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          npx electron-builder --win nsis portable dir --config.win.target=nsis,portable,dir
+          npx electron-builder --win nsis portable dir -p never
 
       - name: 7. Compress win-unpacked Directory for Distribution
         shell: pwsh
@@ -56,20 +55,29 @@ jobs:
       - name: 8. Generate SHA256 Checksums
         shell: pwsh
         run: |
+          New-Item -ItemType Directory -Force -Path "release"
           Get-ChildItem -Path "release" -Include "*.exe", "*.zip", "latest.yml" -Recurse | ForEach-Object {
             $hash = Get-FileHash -Path $_.FullName -Algorithm SHA256
             "$($hash.Hash)  $($_.Name)" | Out-File -FilePath "release/checksums-sha256.txt" -Append -Encoding ascii
           }
-          Write-Host "Generated SHA256 Checksums:"
-          Get-Content "release/checksums-sha256.txt"
+          if (Test-Path "release/checksums-sha256.txt") {
+            Write-Host "Generated SHA256 Checksums:"
+            Get-Content "release/checksums-sha256.txt"
+          }
 
-      - name: 9. Extract Release Notes from CHANGELOG
-        id: release_notes
+      - name: 9. Determine Release Tag
+        id: release_tag
         shell: pwsh
         run: |
-          $tag = if ($env:GITHUB_REF -like "refs/tags/*") { $env:GITHUB_REF.Substring(10) } else { "${{ github.event.inputs.release_tag }}" }
-          if (-not $tag) { $tag = "v1.0.0" }
-          "RELEASE_TAG=$tag" >> $env:GITHUB_ENV
+          $tag = "${{ github.event.inputs.release_tag }}"
+          if (-not $tag -and $env:GITHUB_REF -like "refs/tags/*") {
+            $tag = $env:GITHUB_REF.Substring(10)
+          }
+          if (-not $tag) {
+            $tag = "v1.0.0"
+          }
+          Write-Host "Using Release Tag: $tag"
+          "RELEASE_TAG=$tag" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
 
       - name: 10. Publish GitHub Release with Artifacts
         uses: softprops/action-gh-release@v2
