@@ -86,9 +86,16 @@ export const TopHeader: React.FC = () => {
           title="Klik Kapsul Logo F untuk membuka Menu Navigasi"
           aria-expanded={isLogoMenuOpen}
         >
-          {/* F Icon Badge */}
-          <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-cyan-400 via-blue-500 to-indigo-600 text-white font-black text-sm flex items-center justify-center tracking-tighter clay-button-rgb shadow-md relative shrink-0">
-            F
+          {/* F Icon Badge with real 3D App Logo */}
+          <div className="w-8 h-8 rounded-full overflow-hidden bg-gradient-to-tr from-cyan-400 via-blue-500 to-indigo-600 text-white font-black text-sm flex items-center justify-center tracking-tighter clay-button-rgb shadow-md relative shrink-0">
+            <img
+              src="./icon.png"
+              alt="FAHGIT"
+              className="w-full h-full object-cover"
+              onError={(e) => {
+                e.currentTarget.style.display = 'none';
+              }}
+            />
             <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-400 ring-2 ring-white dark:ring-[#0A0F1D]" />
           </div>
 

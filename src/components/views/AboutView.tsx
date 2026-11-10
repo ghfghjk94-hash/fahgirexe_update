@@ -28,8 +28,15 @@ export const AboutView: React.FC = () => {
         <div className="absolute top-0 right-0 w-80 h-80 bg-gradient-to-bl from-cyan-500/20 via-blue-500/10 to-transparent rounded-full blur-3xl pointer-events-none" />
 
         <div className="relative z-10 flex flex-col sm:flex-row sm:items-center gap-5">
-          <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-cyan-400 via-blue-500 to-indigo-600 flex items-center justify-center text-white font-mono font-black text-3xl clay-button-rgb shadow-xl shrink-0">
-            F
+          <div className="w-16 h-16 rounded-2xl overflow-hidden bg-gradient-to-tr from-cyan-400 via-blue-500 to-indigo-600 flex items-center justify-center text-white font-mono font-black text-3xl clay-button-rgb shadow-xl shrink-0">
+            <img
+              src="./icon.png"
+              alt="FAHGIT Logo"
+              className="w-full h-full object-cover"
+              onError={(e) => {
+                e.currentTarget.style.display = 'none';
+              }}
+            />
           </div>
           <div>
             <div className="flex items-center gap-2">

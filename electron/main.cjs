@@ -44,12 +44,15 @@ let networkStatus = {
 };
 
 function createWindow() {
+  const iconPath = path.join(__dirname, 'icon.png');
+
   mainWindow = new BrowserWindow({
     width: 1280,
     height: 850,
     minWidth: 1024,
     minHeight: 680,
     title: 'FAHGIT by: Faiz_Fahmi_ID',
+    icon: fs.existsSync(iconPath) ? iconPath : undefined,
     backgroundColor: '#0A0F1D',
     show: false,
     webPreferences: {
@@ -57,7 +60,7 @@ function createWindow() {
       nodeIntegration: false,
       contextIsolation: true,
       sandbox: false, // Required for custom preload IPC bridges
-      webSecurity: true,
+      webSecurity: false, // Allows local file:// resources to load relative assets smoothly
       spellcheck: false,
     },
   });
@@ -80,10 +83,33 @@ function createWindow() {
     }
   });
 
+  // DevTools and Reload Shortcuts
+  mainWindow.webContents.on('before-input-event', (event, input) => {
+    if (input.key === 'F12' || (input.control && input.shift && input.key.toLowerCase() === 'i')) {
+      mainWindow.webContents.toggleDevTools();
+      event.preventDefault();
+    }
+    if (input.control && input.key.toLowerCase() === 'r') {
+      mainWindow.reload();
+      event.preventDefault();
+    }
+  });
+
+  mainWindow.webContents.on('did-fail-load', (event, errorCode, errorDescription, validatedURL) => {
+    console.error('[Electron] Failed to load:', errorCode, errorDescription, validatedURL);
+  });
+
   if (isDev) {
     mainWindow.loadURL('http://localhost:3000');
   } else {
-    mainWindow.loadFile(path.join(__dirname, '../dist/index.html'));
+    const appPath = app.getAppPath();
+    const candidatePaths = [
+      path.join(appPath, 'dist/index.html'),
+      path.join(__dirname, '../dist/index.html'),
+      path.join(__dirname, 'dist/index.html'),
+    ];
+    const targetHtml = candidatePaths.find((p) => fs.existsSync(p)) || path.join(__dirname, '../dist/index.html');
+    mainWindow.loadFile(targetHtml);
   }
 
   mainWindow.once('ready-to-show', () => {
